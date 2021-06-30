@@ -2,7 +2,7 @@ require( 'colors' );
 const express = require( 'express' );
 const cors = require( 'cors' );
 
-// DB Connection
+// Database
 const dbConnection = require( '../database/config.db' );
 
 
