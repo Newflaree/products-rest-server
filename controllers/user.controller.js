@@ -25,11 +25,10 @@ const getUsers = async( req = request, res = response ) => {
 
 const getUser = async( req = request, res = response ) => {
   const { id } = req.params; 
-  const query = { status: true };
 
-  const user = await User.findById( id, query );
+  const user = await User.findById( id );
 
-  if ( user.status === false ) {
+  if ( !user.status ) {
     return res.status( 400 ).json({
       msg: 'There is no user with that id.'
     });
@@ -57,15 +56,13 @@ const createUser = async( req = request, res = response ) => {
 const updateUser = async( req = request, res = response ) => {
   const { id } = req.params; 
   const { _id, password, google, email, ...rest } = req.body;
-  const currentChange = { new: true };
 
   if ( password ) {
     const salt = bcrypt.genSaltSync();
     rest.password = bcrypt.hashSync( password, salt );
   }
 
-  const user = await User.findByIdAndUpdate( id, rest, currentChange );
-
+  const user = await User.findByIdAndUpdate( id, rest, { new: true } );
 
   res.json({
     user
@@ -75,12 +72,13 @@ const updateUser = async( req = request, res = response ) => {
 const deleteUser = async( req = request, res = response ) => {
   const { id } = req.params; 
   const query = { status: false };
-  const currentChange = { new: true };
+  const authUser = req.user;
 
-  const user = await User.findByIdAndUpdate( id, query, currentChange );
+  const user = await User.findByIdAndUpdate( id, query, { new: true } );
 
   res.json({
-    user
+    user,
+    authUser
   });
 }
 

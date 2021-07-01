@@ -3,6 +3,7 @@ const { check } = require( 'express-validator' );
 
 // Middlewares
 const { validateFields } = require( '../middlewares/validate-fields.middleware' );
+const { validateJWT } = require( '../middlewares/validate-jwt.middleware' );
 
 // Helpers
 const { 
@@ -48,6 +49,7 @@ router.put( '/:id', [
 ], updateUser );
 
 router.delete( '/:id', [
+  validateJWT,
   check( 'id', 'Not a valid ID' ).isMongoId(),
   check( 'id' ).custom( userIdValidation ),
   validateFields

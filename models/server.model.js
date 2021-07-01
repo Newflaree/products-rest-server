@@ -13,7 +13,8 @@ class Server {
 
     // Paths
     this.apiPaths = {
-      users: '/api/users'
+      auth: '/api/auth',
+      users: '/api/users',
     }
 
     // Connect to DB
@@ -35,6 +36,7 @@ class Server {
   }
 
   routes() {
+    this.app.use( this.apiPaths.auth,  require( '../routes/auth.route' ) );
     this.app.use( this.apiPaths.users, require( '../routes/user.route' ) );
   }
 
