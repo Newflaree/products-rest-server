@@ -10,7 +10,7 @@ const {
 } = require( '../helpers/db-validators.helper' );
 
 // Controllers
-const { login } = require( '../controllers/auth.controller' );
+const { login, googleSignin } = require( '../controllers/auth.controller' );
 
 
 const router = Router();
@@ -20,6 +20,11 @@ router.post( '/login', [
   check( 'password', 'The password is mandatory' ).not().isEmpty(),
   validateFields
 ], login );
+
+router.post( '/google', [
+  check( 'id_token', 'The id_token is mandatory' ).not().isEmpty(),
+  validateFields
+], googleSignin );
 
 
 // Exports
