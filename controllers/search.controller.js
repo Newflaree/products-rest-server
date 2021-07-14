@@ -11,6 +11,48 @@ const allowedCollections = [
   'users',
 ];
 
+const searchCategories = async( term = '', res = response ) => {
+  const isMongoId = ObjectId.isValid( term );
+
+  if ( isMongoId ) {
+    const category = await Category.findById( term ); 
+     
+    return res.status( 200 ).json({
+      results: ( category ) ? [ category ] : []
+    });
+  }
+
+  const regex = new RegExp( term, 'i' );
+
+  const categories = await Category.find({ name: regex, status: true })
+
+  res.status( 200 ).json({
+    results: categories
+  });
+}
+
+const searchProducts = async( term = '', res = response ) => {
+  const isMongoId = ObjectId.isValid( term );
+
+  if ( isMongoId ) {
+    const product = await Product.findById( term )
+                                 .populate( 'category', 'name' ); 
+     
+    return res.status( 200 ).json({
+      results: ( product ) ? [ product ] : []
+    });
+  }
+
+  const regex = new RegExp( term, 'i' );
+
+  const products = await Product.find({ name: regex, status: true })
+                                .populate( 'category', 'name' );
+
+  res.status( 200 ).json({
+    results: products
+  });
+}
+
 const searchUsers = async( term = '', res = response ) => {
   const isMongoId = ObjectId.isValid( term );
 
@@ -27,7 +69,7 @@ const searchUsers = async( term = '', res = response ) => {
   const users = await User.find({
     $or: [{ name: regex }, { email: regex }],
     $and: [{ status: true }]
-  })
+  });
 
   res.status( 200 ).json({
     results: users
@@ -45,12 +87,17 @@ const search = ( req = request, res = response ) => {
 
   switch ( collection ) {
     case 'categories':
+      searchCategories( searchTerm, res );
     break;
+
     case 'products':
+      searchProducts( searchTerm, res );
     break;
+
     case 'users':
       searchUsers( searchTerm, res );
     break;
+
     default:
       res.status( 500 ).json({
         msg: 'Search not defined'
