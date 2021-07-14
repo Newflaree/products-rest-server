@@ -45,7 +45,7 @@ router.post( '/', [
 ] ,createUser );
 
 router.put( '/:id', [
-  check( 'id', 'Not a valid ID' ).isMongoId(),
+  check( 'id', 'Not a valid Mongo ID' ).isMongoId(),
   check( 'id' ).custom( userIdValidation ),
   check( 'role' ).custom( roleValidation ),
   validateFields
@@ -55,7 +55,7 @@ router.delete( '/:id', [
   validateJWT,
   validateRole,
   //hasRole( 'ADMIN_ROLE', 'SALES_ROLE' ),
-  check( 'id', 'Not a valid ID' ).isMongoId(),
+  check( 'id', 'Not a valid Mongo ID' ).isMongoId(),
   check( 'id' ).custom( userIdValidation ),
   validateFields
 ], deleteUser );

@@ -1,7 +1,13 @@
 // Models
-const Role = require( '../models/role.model' );
-const User = require( '../models/user.model' );
+const { 
+  Role, 
+  User, 
+  Category,
+  Product
+} = require( '../models' );
 
+
+// Users
 const roleValidation = async( role = '' ) => {
   const roleExists = await Role.findOne({ role })
 
@@ -24,9 +30,35 @@ const userIdValidation = async( id = '' ) => {
   }
 } 
 
+// Categories
+const categoryIdValidation = async( id = '' ) => {
+  const idExists = await Category.findById( id );
+  if ( !idExists ) {
+    throw new Error( 'There is no category with that id' );
+  }
+}
+
+// Products
+const productIdValidation = async( id = '' ) => {
+  const idExists = await Product.findById( id );
+  if ( !idExists ) {
+    throw new Error( 'There is no product with that id' );
+  }
+}
+
+const productValidation = async( name = '' ) => {
+  const nameExists = await Product.findOne({ name })
+  if ( nameExists ) {
+    throw new Error( 'There is already a product with that name' );
+  }
+} 
+
 
 module.exports = {
+  categoryIdValidation,
   emailValidation,
-  userIdValidation,
+  productIdValidation,
+  productValidation,
   roleValidation,
+  userIdValidation,
 }

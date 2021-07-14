@@ -17,7 +17,7 @@ const getUsers = async( req = request, res = response ) => {
       .limit( Number( limit ) )
   ]);
 
-  res.json({
+  res.status( 200 ).json({
     total,
     users
   });

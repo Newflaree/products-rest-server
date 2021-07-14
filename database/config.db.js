@@ -1,5 +1,6 @@
 const mongoose = require( 'mongoose' );
 
+
 const dbConnection = async() => {
   try {
     await mongoose.connect( process.env.MONGODB_CNN, {
@@ -12,7 +13,7 @@ const dbConnection = async() => {
     console.log( 'Database ONLINE'.green );
   } catch ( err ) {
     console.log( err );
-    throw new Error( 'Error to connect' );
+    throw new Error( 'Error to connect'.red );
 
   }
 }

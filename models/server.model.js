@@ -13,8 +13,11 @@ class Server {
 
     // Paths
     this.apiPaths = {
-      auth: '/api/auth',
-      users: '/api/users',
+      auth:       '/api/auth',
+      categories: '/api/categories',
+      products:   '/api/products',
+      search:     '/api/search',
+      users:      '/api/users',
     }
 
     // Connect to DB
@@ -36,14 +39,17 @@ class Server {
   }
 
   routes() {
-    this.app.use( this.apiPaths.auth,  require( '../routes/auth.route' ) );
-    this.app.use( this.apiPaths.users, require( '../routes/user.route' ) );
+    this.app.use( this.apiPaths.auth,        require( '../routes/auth.route' ) );
+    this.app.use( this.apiPaths.categories,  require( '../routes/categories.route' ) );
+    this.app.use( this.apiPaths.products,    require( '../routes/products.route' ) );
+    this.app.use( this.apiPaths.search,      require( '../routes/search.route' ) );
+    this.app.use( this.apiPaths.users,       require( '../routes/user.route' ) );
   }
 
   listen() {
     this.app.listen( this.port, () => {
       console.clear();
-      console.log( `Listening on port ${ this.port }`.bgWhite.gray );
+      console.log( `Listening on port ${ this.port }`.bgBlack.white );
     });
   }
 }
