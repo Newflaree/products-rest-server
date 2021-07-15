@@ -1,6 +1,7 @@
 require( 'colors' );
 const express = require( 'express' );
 const cors = require( 'cors' );
+const fileUpload = require( 'express-fileupload' );
 
 // Database
 const dbConnection = require( '../database/config.db' );
@@ -17,6 +18,7 @@ class Server {
       categories: '/api/categories',
       products:   '/api/products',
       search:     '/api/search',
+      uploads:    '/api/uploads',
       users:      '/api/users',
     }
 
@@ -33,9 +35,20 @@ class Server {
   }
 
   middlewares() {
+    // Cors
     this.app.use( cors() );
+
+    // Parse body
     this.app.use( express.json() );
+
+    // Public directory
     this.app.use( express.static( 'public' ) );
+
+    // File upload
+    this.app.use( fileUpload({
+      useTempFiles : true,
+      tempFileDir : '/tmp/'
+    }));
   }
 
   routes() {
@@ -43,6 +56,7 @@ class Server {
     this.app.use( this.apiPaths.categories,  require( '../routes/categories.route' ) );
     this.app.use( this.apiPaths.products,    require( '../routes/products.route' ) );
     this.app.use( this.apiPaths.search,      require( '../routes/search.route' ) );
+    this.app.use( this.apiPaths.uploads,     require( '../routes/uploads.route' ) );
     this.app.use( this.apiPaths.users,       require( '../routes/user.route' ) );
   }
 
