@@ -14,6 +14,8 @@ const roleValidation = async( role = '' ) => {
   if ( !roleExists ) {
     throw new Error( `The role ${ role } is not registered` );
   }
+
+  return true;
 }
 
 const emailValidation = async( email = '' ) => {
@@ -21,6 +23,8 @@ const emailValidation = async( email = '' ) => {
   if ( emailExists ) {
     throw new Error( 'There is already a user with that email' );
   }
+
+  return true;
 } 
 
 const userIdValidation = async( id = '' ) => {
@@ -28,6 +32,8 @@ const userIdValidation = async( id = '' ) => {
   if ( !idExists ) {
     throw new Error( 'There is no user with that id.' );
   }
+
+  return true;
 } 
 
 // Categories
@@ -36,6 +42,8 @@ const categoryIdValidation = async( id = '' ) => {
   if ( !idExists ) {
     throw new Error( 'There is no category with that id' );
   }
+
+  return true;
 }
 
 // Products
@@ -44,6 +52,8 @@ const productIdValidation = async( id = '' ) => {
   if ( !idExists ) {
     throw new Error( 'There is no product with that id' );
   }
+
+  return true;
 }
 
 const productValidation = async( name = '' ) => {
@@ -51,10 +61,23 @@ const productValidation = async( name = '' ) => {
   if ( nameExists ) {
     throw new Error( 'There is already a product with that name' );
   }
+
+  return true;
 } 
+
+// Collections
+const allowedCollections = ( collection = '', collections = [] ) => {
+  const included = collections.includes( collection );
+  if ( !included ) {
+    throw new Error( `The ${ collection }'s collection is not allowed` );
+  }
+
+  return true;
+}
 
 
 module.exports = {
+  allowedCollections,
   categoryIdValidation,
   emailValidation,
   productIdValidation,
